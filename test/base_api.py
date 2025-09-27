@@ -1,6 +1,7 @@
 import requests
 from data import BASE_URL, API_KEY
 
+
 class BaseAPI:
     def __init__(self):
         self.base_url = BASE_URL
@@ -16,7 +17,6 @@ class BaseAPI:
             'page': 1,
             'limit': 5
         }
-        
         try:
             response = requests.get(
                 url,
@@ -24,7 +24,6 @@ class BaseAPI:
                 params=params
             )
             return response
-        
         except requests.exceptions.RequestException as e:
             print(f"Произошла ошибка при запросе: {e}")
             return None

@@ -1,5 +1,6 @@
 """
-UI-тесты с использованием мок-объектов для поискового сервиса https://www.kinopoisk.ru/
+UI-тесты с использованием мок-объектов 
+для поискового сервиса https://www.kinopoisk.ru/
 """
 
 import allure
@@ -13,26 +14,21 @@ class KinopoiskPage:
     Page Object класс для работы с главной страницей Кинопоиска
     Реализует основные элементы и действия на странице
     """
-    
     def __init__(self, driver):
         """Инициализация с передачей драйвера"""
         self.driver = driver
-    
     @allure.step("Получить поле поиска")
     def get_search_input(self):
         """Получение элемента поля поиска по имени 'kp_query'"""
         return self.driver.find_element(By.NAME, "kp_query")
-    
     @allure.step("Получить логотип")
     def get_logo(self):
         """Получение элемента логотипа по классу 'header-logo'"""
         return self.driver.find_element(By.CLASS_NAME, "header-logo")
-    
     @allure.step("Выполнить поиск: {query}")
     def search(self, query):
         """
         Выполнение поискового запроса
-        
         Args:
             query (str): Поисковый запрос
         """
@@ -40,7 +36,6 @@ class KinopoiskPage:
         search_input.clear()  # Очищаем поле перед вводом
         search_input.send_keys(query)  # Вводим поисковый запрос
         search_input.submit()  # Отправляем форму поиска
-    
     @allure.step("Кликнуть по логотипу")
     def click_logo(self):
         """Клик по логотипу для возврата на главную страницу"""
@@ -55,17 +50,16 @@ def mock_driver():
     """
     driver = MagicMock()
     element = MagicMock()
-    
     # Настраиваем поведение мок-элемента
     element.is_displayed.return_value = True  # Элемент всегда видим
     element.is_enabled.return_value = True    # Элемент всегда доступен
-    
     # Настраиваем поведение мок-драйвера
-    driver.find_element.return_value = element  # Все find_element возвращают наш элемент
-    driver.find_elements.return_value = [element, element, element]  # Множественные элементы
+    # Все find_element возвращают наш элемент
+    driver.find_element.return_value = element
+    # Множественные элементы
+    driver.find_elements.return_value = [element, element, element]
     driver.title = "КиноПоиск"  # Заголовок страницы
     driver.current_url = "https://www.kinopoisk.ru/"  # URL страницы
-    
     return driver
 
 
@@ -73,10 +67,9 @@ def mock_driver():
 @allure.feature("Базовые тесты с моками")
 class TestSimpleKinopoisk:
     """Тестовый класс для проверки базовой функциональности Кинопоиска"""
-    
     @allure.story("Загрузка страницы")
     @allure.severity(allure.severity_level.BLOCKER)
-    @allure.description("Тест проверяет корректность загрузки главной страницы")
+    @allure.description("Проверяем корректность загрузки главной страницы")
     def test_1_page_loading(self, mock_driver):
         """Тест 1: Проверка корректной загрузки страницы"""
         page = KinopoiskPage(mock_driver)
